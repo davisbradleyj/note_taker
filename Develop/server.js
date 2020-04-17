@@ -19,7 +19,6 @@ app.get("/", function (req, res) {
 app.get("/notes", function (req, res) {
     res.sendFile(path.join(__dirname, "public/notes.html"));
 })
-
 //  get all notes
 app.get("/api/notes", function (req, res) {
     fs.readFile(path.join(__dirname, "./db/db.json"), function (err, data) {
@@ -27,22 +26,37 @@ app.get("/api/notes", function (req, res) {
             console.log(err)
         }
         notesData = JSON.parse(data)
+        console.log("Notes retrieved")
         res.json(notesData)
+        console.log(notesData)
     })
 });
 // write notes to json file
-// read json first, fs read/write file logic to be added
+// read fsreadFile json first, fs.writefile next
 app.post("/api/notes", function (req, res) {
     newNote = req.body
     console.log(newNote) //should be the new note that was posted
-    notesData = fs.readFileSync("./db/db.json", "utf8")
-    notesData.push(newNote)
-    console.log(notesData)// should hold array of notes
-    res.writeFile(path.join(__dirname, "./db/db.json", notesData));
+    // need to add an id
+    fs.readFile(path.join(__dirname, "./db/db.json"), function (err, data) {
+        if (err) {
+            console.log(err)
+        }
+        notesData = JSON.parse(data)
+        notesData.push(newNote)
+        // must be a string, requires a callback so include the err function.
+        fs.writeFile(path.join(__dirname, "./db/db.json"), JSON.stringify(notesData),function (err, data) {
+            if (err) {
+                console.log(err)
+            }
+            res.send()
+        });
+        
+    });
+    
 });
-// app.delete("/api/notes/:id", function (req, res) {
-//     return res.json(NOTES PLACEHOLDER);
-// })
+app.delete("/api/notes/:id", function (req, res) {
+
+})
 
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "public/index.html"));
