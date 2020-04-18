@@ -24,11 +24,8 @@ app.get("/notes", function (req, res) {
 app.get("/api/notes", function (req, res) {
     fs.readFile(path.join(__dirname, "./db/db.json"), function (err, data) {
         if (err) throw err;
-        {console.log(err)}
         notesData = JSON.parse(data)
-        console.log("Notes retrieved")
         res.json(notesData)
-        console.log(notesData)
     })
 });
 // write notes to json file
@@ -39,13 +36,11 @@ app.post("/api/notes", function (req, res) {
     // need to add an id - edit, logic added to index.js to add a data="id" element to the rendered notes when added through DOM
     fs.readFile(path.join(__dirname, "./db/db.json"), function (err, data) {
         if (err) throw err;
-        {console.log(err)}
         notesData = JSON.parse(data)
         notesData.push(newNote)
         // must be a string, requires a callback so include the err function.
         fs.writeFile(path.join(__dirname, "./db/db.json"), JSON.stringify(notesData),function (err, data) {
             if (err) throw err;
-            {console.log(err)}
             res.send()
         });
         
@@ -59,13 +54,11 @@ app.delete("/api/notes/:id", function (req, res) {
     // console.log(req.params.id)
     fs.readFile(path.join(__dirname, "./db/db.json"), function (err, data) {
         if (err) throw err;
-        {console.log(err)}
         notesData = JSON.parse(data)
         // required to remove the specific id from the object array, and allow the values to shift over one place upon deletion
         notesData.splice(req.params.id,1)
         fs.writeFile(path.join(__dirname, "./db/db.json"), JSON.stringify(notesData),function (err, data) {
             if (err) throw err;
-            {console.log(err)}
             res.send();
         })
     })
