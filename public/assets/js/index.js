@@ -114,8 +114,8 @@ var renderNoteList = function(notes) {
     
     var $li = $("<li class='list-group-item'>").data(note);
     var $span = $("<span>").text(note.title);
-    var $delBtn = $("<i class='fas fa-trash-alt float-right text-danger delete-note'>");
     $li.data("id", i);
+    var $delBtn = $("<i class='fas fa-trash-alt float-right text-danger delete-note'>");
     $li.append($span, $delBtn);
     noteListItems.push($li);
   }
