@@ -22,9 +22,8 @@ app.get("/notes", function (req, res) {
 //  get all notes
 app.get("/api/notes", function (req, res) {
     fs.readFile(path.join(__dirname, "./db/db.json"), function (err, data) {
-        if (err) {
-            console.log(err)
-        }
+        if (err) throw err;
+        {console.log(err)}
         notesData = JSON.parse(data)
         console.log("Notes retrieved")
         res.json(notesData)
@@ -38,16 +37,14 @@ app.post("/api/notes", function (req, res) {
     console.log(newNote) //should be the new note that was posted
     // need to add an id
     fs.readFile(path.join(__dirname, "./db/db.json"), function (err, data) {
-        if (err) {
-            console.log(err)
-        }
+        if (err) throw err;
+        {console.log(err)}
         notesData = JSON.parse(data)
         notesData.push(newNote)
         // must be a string, requires a callback so include the err function.
         fs.writeFile(path.join(__dirname, "./db/db.json"), JSON.stringify(notesData),function (err, data) {
-            if (err) {
-                console.log(err)
-            }
+            if (err) throw err;
+            {console.log(err)}
             res.send()
         });
         
@@ -55,7 +52,18 @@ app.post("/api/notes", function (req, res) {
     
 });
 app.delete("/api/notes/:id", function (req, res) {
-
+    console.log(req.params.id)
+    fs.readFile(path.join(__dirname, "./db/db.json"), function (err, data) {
+        if (err) throw err;
+        {console.log(err)}
+        notesData = JSON.parse(data)
+        notesData.splice(req.params.id,1)
+        fs.writeFile(path.join(__dirname, "./db/db.json"), JSON.stringify(notesData),function (err, data) {
+            if (err) throw err;
+            {console.log(err)}
+            res.send();
+        })
+    })
 })
 
 app.get("*", function (req, res) {
