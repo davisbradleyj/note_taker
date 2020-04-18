@@ -40,7 +40,7 @@ At the outset of the project I was falling back to some lessons learned in a pai
 
 Class lectures aided with the development of the delete feature, which follows similar backend logic to the post feature.  There are some small differences, specifically related to how the request information is accessed to identify the exact note to be deleted from the application.  I have highlighed this specific section of code in the below Code Snippet.
 
-<img src="https://github.com/davisbradleyj/note-taker/blob/master/note-taker-demo.gif">
+<img src="https://github.com/davisbradleyj/note_taker/blob/master/note-taker-demo.gif">
 
 ### Code Snippet:
 
