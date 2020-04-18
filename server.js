@@ -11,6 +11,7 @@ app.use(express.static("public"))
 // =======declare variables=======
 var notesData;
 var newNote;
+
 // index directory
 app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "public/index.html"));
@@ -31,11 +32,11 @@ app.get("/api/notes", function (req, res) {
     })
 });
 // write notes to json file
-// read fsreadFile json first, fs.writefile next
+// read fs.readFile json first, fs.writefile next with JS file logic present to post new note after on-click event
 app.post("/api/notes", function (req, res) {
     newNote = req.body
-    console.log(newNote) //should be the new note that was posted
-    // need to add an id
+    // console.log(newNote) => should be the new note that was posted (works!)
+    // need to add an id - edit, logic added to index.js to add a data="id" element to the rendered notes when added through DOM
     fs.readFile(path.join(__dirname, "./db/db.json"), function (err, data) {
         if (err) throw err;
         {console.log(err)}
@@ -51,12 +52,16 @@ app.post("/api/notes", function (req, res) {
     });
     
 });
+// delete notes from json file
+// readFile and writeFile required similar to post, but this time the delete button logic in JS file will allow deletion with on-click event
 app.delete("/api/notes/:id", function (req, res) {
-    console.log(req.params.id)
+    // console.log of res object => follow scope to grab id data
+    // console.log(req.params.id)
     fs.readFile(path.join(__dirname, "./db/db.json"), function (err, data) {
         if (err) throw err;
         {console.log(err)}
         notesData = JSON.parse(data)
+        // required to remove the specific id from the object array, and allow the values to shift over one place upon deletion
         notesData.splice(req.params.id,1)
         fs.writeFile(path.join(__dirname, "./db/db.json"), JSON.stringify(notesData),function (err, data) {
             if (err) throw err;
